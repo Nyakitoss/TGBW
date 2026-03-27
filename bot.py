@@ -33,9 +33,9 @@ def setup_scheduler():
     scheduler.add_job(
         send_reminder,
         trigger="cron",
-        day_of_week="fri",
-        hour=13,
-        minute=20
+        day_of_week="thu",
+        hour=15,
+        minute=55
     )
 
     scheduler.start()

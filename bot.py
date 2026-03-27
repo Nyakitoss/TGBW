@@ -1,0 +1,60 @@
+import asyncio
+import os
+
+from aiogram import Bot
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from dotenv import load_dotenv
+
+# Загружаем переменные
+load_dotenv()
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
+
+MESSAGE_TEXT = (
+    "🔔 Напоминание!\n\n"
+    "Через 5 минут начнётся конференция.\n"
+    "Подключайтесь вовремя."
+)
+
+# Создаём бота
+bot = Bot(token=BOT_TOKEN)
+
+# Планировщик
+scheduler = AsyncIOScheduler(
+    timezone="Asia/Almaty"
+)
+
+
+async def send_reminder():
+    print("Отправляю напоминание...")
+
+    await bot.send_message(
+        chat_id=CHANNEL_ID,
+        text=MESSAGE_TEXT
+    )
+
+
+def setup_scheduler():
+    scheduler.add_job(
+        send_reminder,
+        trigger="cron",
+        day_of_week="thu",
+        hour=15,
+        minute=55
+    )
+
+    scheduler.start()
+
+
+async def main():
+    setup_scheduler()
+
+    print("Бот запущен. Ждёт четверга 15:55 ⏰")
+
+    while True:
+        await asyncio.sleep(3600)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

@@ -3,13 +3,9 @@ import os
 
 from aiogram import Bot
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from dotenv import load_dotenv
 
-# Загружаем переменные
-load_dotenv()
-
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+CHANNEL_ID = int(os.environ["CHANNEL_ID"])
 
 MESSAGE_TEXT = (
     "🔔 Напоминание!\n\n"
@@ -17,10 +13,8 @@ MESSAGE_TEXT = (
     "Подключайтесь вовремя."
 )
 
-# Создаём бота
 bot = Bot(token=BOT_TOKEN)
 
-# Планировщик
 scheduler = AsyncIOScheduler(
     timezone="Asia/Almaty"
 )
@@ -50,7 +44,7 @@ def setup_scheduler():
 async def main():
     setup_scheduler()
 
-    print("Бот запущен. Ждёт четверга 15:55 ⏰")
+    print("Бот запущен ⏰")
 
     while True:
         await asyncio.sleep(3600)
